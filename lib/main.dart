@@ -23,6 +23,7 @@ class _MyAppState extends State<MyApp> {
     'vegetarian': false,
   };
   List<Meal> _availableMeals = DUMMY_MEALS;
+  List<Meal> _favoriteMeals = [];
 
   void _setFilters(Map<String, bool> filterData) {
     setState(() {
@@ -48,6 +49,30 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  void _toggleFavorite(String mealId) {
+    // returns id if found or -1 if not found
+    final existingIndex =
+        _favoriteMeals.indexWhere((meal) => meal.id == mealId);
+    // if found remove
+    if (existingIndex >= 0) {
+      setState(() {
+        _favoriteMeals.removeAt(existingIndex);
+      });
+    }
+    // if not found add 
+    if (existingIndex == -1) {
+      setState(() {
+        _favoriteMeals.add(
+          DUMMY_MEALS.firstWhere((meal) => meal.id == mealId),
+        );
+      });
+    }
+  }
+
+  bool _isMealFavorite(String id) {
+    return _favoriteMeals.any((meal) => meal.id == id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -71,12 +96,15 @@ class _MyAppState extends State<MyApp> {
               ),
             ),
       ),
-      home: TabsScreen(),//CategoriesScreen(),
+      // home: TabsScreen(),
       // defining named routes
       routes: {
-        CategoryMealsScreen.routeName: (context) => CategoryMealsScreen(_availableMeals),
-        MealDetailScreen.routeName: (context) => MealDetailScreen(),
-        FiltersScreen.routeName: (context) => FiltersScreen(_filters, _setFilters),
+        '/': (context) => TabsScreen(_favoriteMeals),
+        CategoryMealsScreen.routeName: (context) =>
+            CategoryMealsScreen(_availableMeals),
+        MealDetailScreen.routeName: (context) => MealDetailScreen(_toggleFavorite, _isMealFavorite),
+        FiltersScreen.routeName: (context) =>
+            FiltersScreen(_filters, _setFilters),
       },
       // triggers if route cant be found or for highly dynamic apps
       onGenerateRoute: (settings) {
@@ -89,7 +117,7 @@ class _MyAppState extends State<MyApp> {
       },
       // reached when flutter faild to load screen, basically its an 404 error page
       onUnknownRoute: (settings) {
-        return MaterialPageRoute(builder: (context)=> CategoriesScreen());
+        return MaterialPageRoute(builder: (context) => CategoriesScreen());
       },
     );
   }
