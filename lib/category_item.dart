@@ -3,17 +3,18 @@ import 'package:flutter/material.dart';
 import './category_meals_screen.dart';
 
 class CategoryItem extends StatelessWidget {
+  final String id;
   final String title;
   final Color color;
 
-  CategoryItem(this.title, this.color);
+  CategoryItem(this.id, this.title, this.color);
 
   void selectCategory(BuildContext context) {
     // adding context for Navigator to know what a current screen/page is
     // push a new page
     Navigator.of(context).push(
       MaterialPageRoute(builder: (_) {
-        return CategoryMealsScreen();
+        return CategoryMealsScreen(id, title);
       }),
     );
   }
@@ -22,7 +23,9 @@ class CategoryItem extends StatelessWidget {
   Widget build(BuildContext context) {
     // adding onTap via InkWell witch is basically a GestureDetector
     return InkWell(
-      onTap: () => selectCategory(context),
+      onTap: () => selectCategory(
+        context,
+      ),
       splashColor: Theme.of(context).primaryColor,
       // this borderRadius should match borderRadius of parent, in this case a Container
       borderRadius: BorderRadius.circular(15),
