@@ -9,36 +9,52 @@ class TabsScreen extends StatefulWidget {
 }
 
 class _TabsScreenState extends State<TabsScreen> {
+  final List<Map<String, Object>> _pages = [
+    {
+      'page': CategoriesScreen(),
+      'title': 'Categories',
+    },
+    {
+      'page': FavoritesScreen(),
+      'title': 'Favorites',
+    },
+  ];
+  int _selectedPageIndex = 0;
+
+  // index is passed automatically by flutter
+  void _selectPage(int index) {
+    setState(() {
+      _selectedPageIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      initialIndex: 0,// default tab selected
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(
-          title: Text('Meals'),
-          bottom: TabBar(
-            tabs: <Widget>[
-              Tab(
-                icon: Icon(Icons.category),
-                text: 'Categories',
-              ),
-              Tab(
-                icon: Icon(Icons.star),
-                text: 'Favorites',
-              ),
-            ],
+          title: Text(
+            _pages[_selectedPageIndex]['title'],
           ),
         ),
-        // here we must add same amount of child widgets as number of Tab()
-        // widgets created above, so in our case its 2
-        body: TabBarView(
-          children: <Widget>[
-            CategoriesScreen(),
-            FavoritesScreen(),
+        body: _pages[_selectedPageIndex]['page'],
+        // added bottom tabs insted of top, the process is quite different
+        bottomNavigationBar: BottomNavigationBar(
+          onTap: _selectPage,
+          backgroundColor: Theme.of(context).primaryColor,
+          unselectedItemColor: Colors.white,
+          selectedItemColor: Theme.of(context).accentColor,
+          currentIndex: _selectedPageIndex,
+          type: BottomNavigationBarType.fixed,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.category),
+              title: Text('Categories'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.star),
+              title: Text('Favorites'),
+            ),
           ],
-        ),
-      ),
-    );
+        ));
   }
 }
