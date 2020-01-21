@@ -38,12 +38,12 @@ class MyApp extends StatelessWidget {
       },
       // triggers if route cant be found or for highly dynamic apps
       onGenerateRoute: (settings) {
-        if (settings.name == '/meal-detail') {
+        /* if (settings.name == '/meal-detail') {
           return 'nesto';
         } else if (settings.name == '/something-else') {
           return 'nesto drugo';
         }
-        return MaterialPageRoute(builder: (context)=> CategoriesScreen());
+        return MaterialPageRoute(builder: (context)=> CategoriesScreen()); */
       },
       // reached when flutter faild to load screen, basically its an 404 error page
       onUnknownRoute: (settings) {
