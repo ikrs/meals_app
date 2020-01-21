@@ -12,7 +12,7 @@ class CategoryItem extends StatelessWidget {
   void selectCategory(BuildContext context) {
     // adding context for Navigator to know what a current screen/page is
     // push a new page
-    
+
     /* Navigator.of(context).push(
       MaterialPageRoute(builder: (_) {
         return CategoryMealsScreen(id, title);
@@ -21,7 +21,7 @@ class CategoryItem extends StatelessWidget {
 
     // named route
     Navigator.of(context).pushNamed(
-      '/category-meals',
+      CategoryMealsScreen.routeName, // const path name
       arguments: {
         'id': id,
         'title': title,
