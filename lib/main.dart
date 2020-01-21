@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import './screens/meal_detail_screen.dart';
 import './screens/categories_screen.dart';
 import './screens/category_meals_screen.dart';
 
@@ -33,6 +34,20 @@ class MyApp extends StatelessWidget {
       // defining named routes
       routes: {
         CategoryMealsScreen.routeName: (context) => CategoryMealsScreen(),
+        MealDetailScreen.routeName: (context) => MealDetailScreen(),
+      },
+      // triggers if route cant be found or for highly dynamic apps
+      onGenerateRoute: (settings) {
+        if (settings.name == '/meal-detail') {
+          return 'nesto';
+        } else if (settings.name == '/something-else') {
+          return 'nesto drugo';
+        }
+        return MaterialPageRoute(builder: (context)=> CategoriesScreen());
+      },
+      // reached when flutter faild to load screen, basically its an 404 error page
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(builder: (context)=> CategoriesScreen());
       },
     );
   }
